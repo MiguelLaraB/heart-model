@@ -38,6 +38,11 @@ jobs:
     run: |
       docker login -u $DOCKER_USER -p $DOCKER_PASSWORD 
   - name: docker Push
-    run: docker push ${{secrets.DOCKER_USER}}/${{secrets.MODEL_NAME}}:${{ github.event.client_payload.sha }}
+    if: ${{ github.event.client_payload.sha != '' }}
+    run: docker push ${{secrets.DOCKER_USER}}/${{secrets.MODEL_NAME}}:${{github.event.client_payload.sha}}
+
+  - name: docker Push with latest
+    if: ${{ github.event.client_payload.sha == '' }}
+    run: docker push ${{secrets.DOCKER_USER}}/${{secrets.MODEL_NAME}}:latest
   - name: show images
     run: docker images
