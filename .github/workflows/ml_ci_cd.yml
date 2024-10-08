@@ -44,5 +44,12 @@ jobs:
   - name: docker Push with latest
     if: ${{ github.event.client_payload.sha == '' }}
     run: docker push ${{secrets.DOCKER_USER}}/${{secrets.MODEL_NAME}}:latest
+
+  - name: Notify Render
+    if: ${{ github.event.client_payload.sha != '' }}
+    run: |
+        curl -X POST "https://api.render.com/deploy/srv-crtjq7jtq21c73ft6440?key=_NINKzkrDxE" \
+        -H "Content-Type: application/json"
+        
   - name: show images
     run: docker images
