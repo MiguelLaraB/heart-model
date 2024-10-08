@@ -19,10 +19,15 @@ jobs:
         with:
           flutter-version: '3.3.0' # O la versión que estés usando
 
+      - name: Install dependencies
+        run: flutter pub get
+        working-directory: ./
+
       # Ensamblar el proyecto Flutter en un ejecutable
       - name: Flutter Build
         run: flutter build web
-
+        working-directory: ./
+        
       # Construir la imagen Docker
       - name: Docker Build
         run: docker build -t ${{secrets.DOCKER_USER}}/flutter-app:${{github.sha}} .
