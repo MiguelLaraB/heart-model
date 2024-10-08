@@ -24,7 +24,13 @@ jobs:
   - name: Debugging step
     run: echo "DOCKER_USER=${{secrets.DOCKER_USER}} MODEL_NAME=${{secrets.MODEL_NAME}} SHA=${{github.event.client_payload.sha}}"
   - name: docker build
+    if: ${{ github.event.client_payload.sha != '' }}
     run: docker build -t ${{secrets.DOCKER_USER}}/${{secrets.MODEL_NAME}}:${{github.event.client_payload.sha}} .
+
+  - name: docker build with modelname
+    if: ${{ github.event.client_payload.sha == '' }}
+    run: docker build -t ${{secrets.DOCKER_USER}}/${{secrets.MODEL_NAME}}:latest .
+
   - name: docker login
     env:
       DOCKER_USER: ${{secrets.DOCKER_USER}}
