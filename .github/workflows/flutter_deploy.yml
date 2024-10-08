@@ -21,7 +21,6 @@ jobs:
 
       - name: Install dependencies
         run: flutter pub get
-        working-directory: ./
 
       # Ensamblar el proyecto Flutter en un ejecutable
       - name: Flutter Build
